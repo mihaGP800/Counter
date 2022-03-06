@@ -1,0 +1,16 @@
+.tablo {
+    margin: 5px;
+    font-size: 70px;
+    text-align: center;
+    width: 150px;
+    height: 100px;
+    border: 3px solid darkblue;
+    border-radius: 10px;
+    background-color: cornflowerblue;
+
+}
+
+.tabloError{
+    color: red;
+    font-weight: bold;
+}
