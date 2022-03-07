@@ -13,7 +13,8 @@ export const Tablo: React.FC<TabloType> = ({num, error, maxValue, ...props}) => 
 
         <>
             {error
-                ? <div className={`${s.tablo} ${s.errorText}`}>{error}</div>
+                ? <div
+                    className={error.includes('incorrect') ? `${s.tablo} ${s.errorText} ${s.red}` : `${s.tablo} ${s.errorText}`}>{error}</div>
                 :
                 <div className={num === maxValue ? `${s.tablo} ${s.tabloMaxValue}` : s.tablo}>
                     {num}

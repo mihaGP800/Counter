@@ -1,0 +1,24 @@
+.input{
+    box-shadow: none;
+    outline:none;
+    text-align: center;
+    width: 6em;
+    font-weight: bold;
+}
+
+.green {
+    border-color: green;
+    color: green;
+
+}
+
+.red {
+    border-color: red;
+    color: red;
+
+}
+
+.labelText{
+    font-weight: bold;
+    color: darkblue;
+}

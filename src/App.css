@@ -2,9 +2,11 @@
     width: 200px;
     height: 350px;
     border-radius: 10px;
-    background-color: #566c98;
+    border: 2px solid black;
+    background-color: #798a9b;
     display: flex;
     flex-direction: column;
     justify-content:center;
     align-items:center;
 }
+
