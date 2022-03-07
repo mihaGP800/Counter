@@ -5,19 +5,26 @@ import s from './ButtonPanel.module.css'
 type FunctionPanelType = {
     addInc: () => void
     reset: () => void
+    set: () => void
     num: number
-    maxValue:number
-    startValue:number
-
+    maxValue: number
+    startValue: number
+    counterStep: number
+    error: string
 }
 
-export const ButtonPanel: React.FC<FunctionPanelType> = ({addInc, reset, num,maxValue,startValue, ...props}) => {
+export const ButtonPanel: React.FC<FunctionPanelType> = (
+    {addInc, reset, set, num, maxValue, startValue, counterStep, error, ...props}) => {
 
     const classNameButton = s.buttonInc
     return (
         <div className={s.panel}>
-            <Button className={classNameButton} title={'inc'} callBack={addInc} disabledStatus={num === maxValue}/>
-            <Button className={classNameButton} title={'reset'} callBack={reset} disabledStatus={num === startValue}/>
+            <Button className={classNameButton} title={'inc'} callBack={addInc}
+                    disabledStatus={num === maxValue || !!error}/>
+            <Button className={classNameButton} title={'reset'} callBack={reset}
+                    disabledStatus={num === startValue || !!error}/>
+            <Button className={classNameButton} title={'set'} callBack={set}
+                    disabledStatus={startValue < 0 || maxValue < 0 || counterStep <= 0 || startValue >= maxValue}/>
         </div>
     );
 }

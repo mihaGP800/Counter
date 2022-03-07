@@ -1,4 +1,23 @@
-.input{
+.input {
     display: flex;
     flex-direction: column;
+}
+
+.inputInvalid {
+    border-color: red;
+    color: red;
+    box-shadow: none;
+}
+
+
+.div input:valid {
+    border-color: green;
+    color: green;
+    box-shadow: none;
+}
+
+.div input:invalid {
+    border-color: red;
+    color: red;
+    box-shadow: none;
 }

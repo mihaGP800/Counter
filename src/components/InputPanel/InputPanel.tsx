@@ -4,22 +4,21 @@ import {Input} from "../Input/Input";
 import {inputType} from "../../App";
 
 type InputPanelType = {
-    setStartValue: (startValue: number) => void
-    startValue: number
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
     inputs: Array<inputType>
+    num:number
 }
 
-export const InputPanel: React.FC<InputPanelType> = ({inputs, startValue, setStartValue, onChange, ...props}) => {
+export const InputPanel: React.FC<InputPanelType> = ({inputs,num, ...props}) => {
     return (
-        <div className={s.InputPanel}>
+        <div className={s.input}>
             {inputs.map(i => {
-                return <Input labelTitle={i.labelTitle}
-                              startValue={startValue}
-                              setStartValue={setStartValue}
-                              onChange={onChange}
-                              id={i.id}
-                              placeholder={i.placeholder}
+                return <Input
+                    key={i.id}
+                    id={i.id}
+                    labelTitle={i.labelTitle}
+                    onChange={i.onChange}
+                    placeholder={i.placeholder}
+                    num={num}
                 />
             })}
 

@@ -3,13 +3,22 @@ import s from './Tablo.module.css'
 
 type TabloType = {
     num: number
-    startValue: number
+    maxValue: number
+    error: string
+
 }
 
-export const Tablo: React.FC<TabloType> = ({num,startValue, ...props}) => {
+export const Tablo: React.FC<TabloType> = ({num, error, maxValue, ...props}) => {
     return (
-        <div className={num === 5 ? `${s.tablo} ${s.tabloError}` : s.tablo}>
-            {num}
-        </div>
+
+        <>
+            {error
+                ? <div className={`${s.tablo} ${s.errorText}`}>{error}</div>
+                :
+                <div className={num === maxValue ? `${s.tablo} ${s.tabloMaxValue}` : s.tablo}>
+                    {num}
+                </div>
+            }
+        </>
     );
 }
