@@ -24,7 +24,7 @@ export const ButtonPanel: React.FC<FunctionPanelType> = (
             <Button className={classNameButton} title={'reset'} callBack={reset}
                     disabledStatus={num === startValue || !!error}/>
             <Button className={classNameButton} title={'set'} callBack={set}
-                    disabledStatus={startValue < 0 || maxValue < 0 || counterStep <= 0 || startValue >= maxValue || (maxValue - startValue) % counterStep !== 0}/>
+                    disabledStatus={startValue < 0 || maxValue < 0 || counterStep <= 0 || startValue >= maxValue || (maxValue - startValue) % counterStep !== 0 || !error}/>
         </div>
     );
 }

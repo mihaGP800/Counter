@@ -59,7 +59,7 @@ function App() {
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) > startValue && startValue > 0) {
+        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) > startValue && startValue >= 0) {
             setError('enter values and press "set"')
         } else {
             setError('incorrect Value')
