@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import './App.css';
-import {Tablo} from "./components/Tablo/Tablo";
-import {ButtonPanel} from "./components/ButtonPanel/ButtonPanel";
-import {InputStart} from "./InputStart/InputStart";
-import {InputMax} from "./InputMax/InputMax";
-import {InputStep} from "./InputStep/InputStep";
+import {Tablo} from './components/Tablo/Tablo';
+import {ButtonPanel} from './components/ButtonPanel/ButtonPanel';
+import {InputStart} from './InputStart/InputStart';
+import {InputMax} from './InputMax/InputMax';
+import {InputStep} from './InputStep/InputStep';
 
 export type inputType = {
     labelTitle: string
@@ -26,6 +26,8 @@ function App() {
         const localStartAsString = localStorage.getItem('counterStartValue')
         const localMaxAsString = localStorage.getItem('counterMaxValue')
         const localStepAsString = localStorage.getItem('counterStepValue')
+        const localError = localStorage.getItem('error')
+        localError && setError(localError)
 
         if (localNumAsString) {
             setNum(JSON.parse(localNumAsString))
@@ -46,32 +48,33 @@ function App() {
         localStorage.setItem('counterStartValue', JSON.stringify(startValue))
         localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
         localStorage.setItem('counterStepValue', JSON.stringify(counterStep))
-    }, [num])
+        localStorage.setItem('error', error)
+    }, [num, startValue, maxValue, counterStep, error])
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) < maxValue) {
+        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) < maxValue && counterStep > 0) {
             setError('enter values and press "set"')
         } else {
             setError('incorrect Value')
         }
-        (maxValue - Number(e.currentTarget.value)) % counterStep !== 0 && setError('incorrect CounterStep')
+        Number(e.currentTarget.value) >= 0 && (maxValue - Number(e.currentTarget.value)) % counterStep > 0 && setError('incorrect CounterStep')
         setStartValue(Number(e.currentTarget.value))
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) > startValue && startValue >= 0) {
+        if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) > startValue && startValue >= 0 && counterStep > 0) {
             setError('enter values and press "set"')
         } else {
             setError('incorrect Value')
         }
-        (Number(e.currentTarget.value) - startValue) % counterStep !== 0 && setError('incorrect Value')
+        (Number(e.currentTarget.value) - startValue) % counterStep > 0 && setError('incorrect CounterStep')
 
 
         setMaxValue(Number(e.currentTarget.value))
     }
 
     const onChangeCounterStep = (e: ChangeEvent<HTMLInputElement>) => {
-        if (Number(e.currentTarget.value) > 0 && (maxValue - startValue) % Number(e.currentTarget.value) === 0 && startValue > 0 && maxValue > 0 && startValue !== maxValue) {
+        if (Number(e.currentTarget.value) > 0 && (maxValue - startValue) % Number(e.currentTarget.value) === 0 && startValue >= 0 && maxValue > 0 && startValue !== maxValue) {
             setError('enter values and press "set"')
         } else {
             setError('incorrect Value')
