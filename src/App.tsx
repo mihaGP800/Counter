@@ -105,7 +105,7 @@ function App() {
                    onChangeStartValue={onChangeStartValue} onChangeMaxValue={onChangeMaxValue}
                    onChangeCounterStep={onChangeCounterStep}/>
             <ButtonPanel addInc={addInc} reset={reset} set={set} num={num} maxValue={maxValue} startValue={startValue}
-                         counterStep={counterStep} error={error}/>
+                         counterStep={counterStep} error={error} toggle={toggle}/>
 
         </div>
     );

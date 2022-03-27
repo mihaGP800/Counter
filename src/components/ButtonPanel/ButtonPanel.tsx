@@ -11,16 +11,17 @@ type FunctionPanelType = {
     startValue: number
     counterStep: number
     error: string
+    toggle: boolean
 }
 
 export const ButtonPanel: React.FC<FunctionPanelType> = (
-    {addInc, reset, set, num, maxValue, startValue, counterStep, error, ...props}) => {
+    {addInc, reset, set, num, maxValue, startValue, counterStep, error,toggle, ...props}) => {
 
     const classNameButton = s.buttonInc
     return (
         <div className={s.panel}>
             <Button className={classNameButton} title={'inc'} callBack={addInc}
-                    disabledStatus={num === maxValue || !!error}/>
+                    disabledStatus={num === maxValue || !!error || !toggle}/>
             <Button className={classNameButton} title={'reset'} callBack={reset}
                     disabledStatus={num === startValue || !!error}/>
             <Button className={classNameButton} title={'set'} callBack={set}
