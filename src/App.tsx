@@ -20,6 +20,7 @@ function App() {
     let [counterStep, setCounterStep] = useState<number>(1)
     let [num, setNum] = useState<number>(startValue)
     let [error, setError] = useState<string>('')
+    let [toggle, setToggle] = useState(true)
 
     useEffect(() => {
         const localNumAsString = localStorage.getItem('counterNum')
@@ -95,17 +96,17 @@ function App() {
         setMaxValue(maxValue)
         setCounterStep(counterStep)
         setError('')
+        setToggle(!toggle)
     }
 
     return (
         <div className={'header'}>
-            <Tablo num={num} error={error} maxValue={maxValue}/>
+            <Tablo num={num} error={error} maxValue={maxValue} startValue={startValue} counterStep={counterStep} toggle={toggle}
+                   onChangeStartValue={onChangeStartValue} onChangeMaxValue={onChangeMaxValue}
+                   onChangeCounterStep={onChangeCounterStep}/>
             <ButtonPanel addInc={addInc} reset={reset} set={set} num={num} maxValue={maxValue} startValue={startValue}
                          counterStep={counterStep} error={error}/>
-            <InputStart startValue={startValue} maxValue={maxValue} onChangeStartValue={onChangeStartValue}/>
-            <InputMax startValue={startValue} maxValue={maxValue} onChangeMaxValue={onChangeMaxValue}/>
-            <InputStep startValue={startValue} maxValue={maxValue} counterStep={counterStep}
-                       onChangeCounterStep={onChangeCounterStep}/>
+
         </div>
     );
 }
