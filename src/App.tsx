@@ -5,6 +5,8 @@ import {ButtonPanel} from './components/ButtonPanel/ButtonPanel';
 import {InputStart} from './InputStart/InputStart';
 import {InputMax} from './InputMax/InputMax';
 import {InputStep} from './InputStep/InputStep';
+import {InputUniversal} from './InputUniversal/InputUniversal';
+import s from './InputStart/InputStart.module.css';
 
 export type inputType = {
     labelTitle: string
@@ -27,20 +29,12 @@ function App() {
         const localMaxAsString = localStorage.getItem('counterMaxValue')
         const localStepAsString = localStorage.getItem('counterStepValue')
         const localError = localStorage.getItem('error')
-        localError && setError(localError)
 
-        if (localNumAsString) {
-            setNum(JSON.parse(localNumAsString))
-        }
-        if (localStartAsString) {
-            setStartValue(JSON.parse(localStartAsString))
-        }
-        if (localMaxAsString) {
-            setMaxValue(JSON.parse(localMaxAsString))
-        }
-        if (localStepAsString) {
-            setCounterStep(JSON.parse(localStepAsString))
-        }
+        localNumAsString && setNum(JSON.parse(localNumAsString))
+        localStartAsString && setStartValue(JSON.parse(localStartAsString))
+        localMaxAsString && setMaxValue(JSON.parse(localMaxAsString))
+        localStepAsString && setCounterStep(JSON.parse(localStepAsString))
+        localError && setError(localError)
     }, [])
 
     useEffect(() => {
@@ -97,15 +91,28 @@ function App() {
         setError('')
     }
 
+    const classNameInputStart = startValue >= 0 && startValue < maxValue ? `${s.input} ${s.green}` : `${s.input} ${s.red}`
+    const classNameInputMax = maxValue >= 0 && startValue < maxValue ? `${s.input} ${s.green}` : `${s.input} ${s.red}`
+    const classNameInputStep = counterStep > 0 && (maxValue - startValue) % counterStep === 0 ? `${s.input} ${s.green}` : `${s.input} ${s.red}`
+
     return (
         <div className={'header'}>
             <Tablo num={num} error={error} maxValue={maxValue}/>
-            <ButtonPanel addInc={addInc} reset={reset} set={set} num={num} maxValue={maxValue} startValue={startValue}
+            <ButtonPanel addInc={addInc} reset={reset} set={set} num={num} maxValue={maxValue}
+                         startValue={startValue}
                          counterStep={counterStep} error={error}/>
-            <InputStart startValue={startValue} maxValue={maxValue} onChangeStartValue={onChangeStartValue}/>
-            <InputMax startValue={startValue} maxValue={maxValue} onChangeMaxValue={onChangeMaxValue}/>
-            <InputStep startValue={startValue} maxValue={maxValue} counterStep={counterStep}
-                       onChangeCounterStep={onChangeCounterStep}/>
+            <InputUniversal id={'startValue'}
+                            value={startValue}
+                            onChange={onChangeStartValue}
+                            classNameInput={classNameInputStart}/>
+            <InputUniversal id={'maxValue'}
+                            value={maxValue}
+                            onChange={onChangeMaxValue}
+                            classNameInput={classNameInputMax}/>
+            <InputUniversal id={'counterStep'}
+                            value={counterStep}
+                            onChange={onChangeCounterStep}
+                            classNameInput={classNameInputStep}/>
         </div>
     );
 }
