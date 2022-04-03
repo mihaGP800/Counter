@@ -1,12 +1,20 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import './App.css';
 import {Tablo} from './components/Tablo/Tablo';
 import {ButtonPanel} from './components/ButtonPanel/ButtonPanel';
-import {InputStart} from './InputStart/InputStart';
-import {InputMax} from './InputMax/InputMax';
-import {InputStep} from './InputStep/InputStep';
 import {InputUniversal} from './InputUniversal/InputUniversal';
 import s from './InputStart/InputStart.module.css';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppStateType} from './BLL/Store/store';
+import {
+    chooseCounterStep,
+    chooseMaxValue,
+    chooseStartValue,
+    incValue,
+    InitialStateType,
+    resetValue,
+    showError
+} from './BLL/Store/Counter-reducer';
 
 export type inputType = {
     labelTitle: string
@@ -17,78 +25,53 @@ export type inputType = {
 
 function App() {
 
-    let [startValue, setStartValue] = useState<number>(0)
-    let [maxValue, setMaxValue] = useState<number>(3)
-    let [counterStep, setCounterStep] = useState<number>(1)
-    let [num, setNum] = useState<number>(startValue)
-    let [error, setError] = useState<string>('')
+    let {startValue, maxValue, counterStep, num, error} = useSelector<AppStateType, InitialStateType>(state => state.counter)
 
-    useEffect(() => {
-        const localNumAsString = localStorage.getItem('counterNum')
-        const localStartAsString = localStorage.getItem('counterStartValue')
-        const localMaxAsString = localStorage.getItem('counterMaxValue')
-        const localStepAsString = localStorage.getItem('counterStepValue')
-        const localError = localStorage.getItem('error')
-
-        localNumAsString && setNum(JSON.parse(localNumAsString))
-        localStartAsString && setStartValue(JSON.parse(localStartAsString))
-        localMaxAsString && setMaxValue(JSON.parse(localMaxAsString))
-        localStepAsString && setCounterStep(JSON.parse(localStepAsString))
-        localError && setError(localError)
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem('counterNum', JSON.stringify(num))
-        localStorage.setItem('counterStartValue', JSON.stringify(startValue))
-        localStorage.setItem('counterMaxValue', JSON.stringify(maxValue))
-        localStorage.setItem('counterStepValue', JSON.stringify(counterStep))
-        localStorage.setItem('error', error)
-    }, [num, startValue, maxValue, counterStep, error])
+    const dispatch = useDispatch()
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
         if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) < maxValue && counterStep > 0) {
-            setError('enter values and press "set"')
+            dispatch(showError('enter values and press "set"'))
         } else {
-            setError('incorrect Value')
+            dispatch(showError('incorrect Value'))
         }
-        Number(e.currentTarget.value) >= 0 && (maxValue - Number(e.currentTarget.value)) % counterStep > 0 && setError('incorrect CounterStep')
-        setStartValue(Number(e.currentTarget.value))
+        Number(e.currentTarget.value) >= 0 && (maxValue - Number(e.currentTarget.value)) % counterStep > 0 && dispatch(showError('incorrect CounterStep'))
+        dispatch(chooseStartValue(Number(e.currentTarget.value)))
     }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) > startValue && startValue >= 0 && counterStep > 0) {
-            setError('enter values and press "set"')
+            dispatch(showError('enter values and press "set"'))
         } else {
-            setError('incorrect Value')
+            dispatch(showError('incorrect Value'))
         }
-        (Number(e.currentTarget.value) - startValue) % counterStep > 0 && setError('incorrect CounterStep')
+        (Number(e.currentTarget.value) - startValue) % counterStep > 0 && dispatch(showError('incorrect CounterStep'))
 
-
-        setMaxValue(Number(e.currentTarget.value))
+        dispatch(chooseMaxValue(Number(e.currentTarget.value)))
     }
 
     const onChangeCounterStep = (e: ChangeEvent<HTMLInputElement>) => {
         if (Number(e.currentTarget.value) > 0 && (maxValue - startValue) % Number(e.currentTarget.value) === 0 && startValue >= 0 && maxValue > 0 && startValue !== maxValue) {
-            setError('enter values and press "set"')
+            dispatch(showError('enter values and press "set"'))
         } else {
-            setError('incorrect Value')
+            dispatch(showError('incorrect Value'))
         }
-        setCounterStep(Number(e.currentTarget.value))
+        dispatch(chooseCounterStep(Number(e.currentTarget.value)))
     }
 
     const addInc = () => {
-        num < maxValue && setNum(num + counterStep)
+        num < maxValue && dispatch(incValue())
     }
 
     const reset = () => {
-        setNum(startValue)
+        dispatch(resetValue())
     }
 
     const set = () => {
-        setNum(startValue)
-        setMaxValue(maxValue)
-        setCounterStep(counterStep)
-        setError('')
+        dispatch(resetValue())
+        dispatch(chooseMaxValue(maxValue))
+        dispatch(chooseCounterStep(counterStep))
+        dispatch(showError(''))
     }
 
     const classNameInputStart = startValue >= 0 && startValue < maxValue ? `${s.input} ${s.green}` : `${s.input} ${s.red}`
