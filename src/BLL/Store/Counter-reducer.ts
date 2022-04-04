@@ -13,16 +13,16 @@ export type InitialStateType = typeof initialState
 
 export const counterReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
+        case 'INC-VALUE':
+            return {...state, num: state.num + state.counterStep}
+        case 'RESET-VALUE':
+            return {...state, num: state.startValue}
         case 'CHOOSE-START-VALUE':
             return {...state, startValue: action.payload.startValue}
         case 'CHOOSE-MAX-VALUE':
             return {...state, maxValue: action.payload.maxValue}
         case 'CHOOSE-COUNTER-STEP':
             return {...state, counterStep: action.payload.counterStep}
-        case 'INC-VALUE':
-            return {...state, num: state.num + state.counterStep}
-        case 'RESET-VALUE':
-            return {...state, num: state.startValue}
         case 'SHOW-ERROR':
             return {...state, error: action.payload.error}
         default:
@@ -47,15 +47,17 @@ export const incValue = () => ({type: 'INC-VALUE'} as const)
 export const resetValue = () => ({type: 'RESET-VALUE'} as const)
 
 
-// export const chooseStartValueTC = (startValue: number) => (dispatch: Dispatch, getState: () => AppStateType) => {
-//     localStorage.setItem('counterStartValue', JSON.stringify(startValue))
-//     dispatch(chooseStartValue(startValue))
-// }
-//
-// export const getStartValueFromLocalStorageTC = () => (dispatch: Dispatch) => {
-//     const localStartAsString = localStorage.getItem('counterStartValue')
-//     localStartAsString && dispatch(chooseStartValue(JSON.parse(localStartAsString)))
-// }
+
+
+export const chooseStartValueTC = (startValue: number) => (dispatch: Dispatch, getState: () => AppStateType) => {
+    localStorage.setItem('counterStartValue', JSON.stringify(startValue))
+    dispatch(chooseStartValue(startValue))
+}
+
+export const getStartValueFromLocalStorageTC = () => (dispatch: Dispatch) => {
+    const localStartAsString = localStorage.getItem('counterStartValue')
+    localStartAsString && dispatch(chooseStartValue(JSON.parse(localStartAsString)))
+}
 
 
 
