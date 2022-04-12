@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect} from 'react';
+import React, {ChangeEvent} from 'react';
 import './App.css';
 import {Tablo} from './components/Tablo/Tablo';
 import {ButtonPanel} from './components/ButtonPanel/ButtonPanel';
@@ -7,14 +7,20 @@ import s from './InputStart/InputStart.module.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppStateType} from './BLL/Store/store';
 import {
+    ActionTypes,
     chooseCounterStep,
     chooseMaxValue,
     chooseStartValue,
     incValue,
-    InitialStateType,
     resetValue,
+    selectorCounterStep,
+    selectorError,
+    selectorMaxValue,
+    selectorNum,
+    selectorStartValue,
     showError
 } from './BLL/Store/Counter-reducer';
+import {Dispatch} from 'redux';
 
 export type inputType = {
     labelTitle: string
@@ -25,9 +31,13 @@ export type inputType = {
 
 function App() {
 
-    let {startValue, maxValue, counterStep, num, error} = useSelector<AppStateType, InitialStateType>(state => state.counter)
+    let startValue = useSelector<AppStateType, number>(selectorStartValue)
+    let maxValue = useSelector<AppStateType, number>(selectorMaxValue)
+    let counterStep = useSelector<AppStateType, number>(selectorCounterStep)
+    let num = useSelector<AppStateType, number>(selectorNum)
+    let error = useSelector<AppStateType, string>(selectorError)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<Dispatch<ActionTypes>>()
 
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
         if (Number(e.currentTarget.value) >= 0 && Number(e.currentTarget.value) < maxValue && counterStep > 0) {
