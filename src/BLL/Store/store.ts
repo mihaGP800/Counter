@@ -3,6 +3,9 @@ import thunk from 'redux-thunk';
 import {counterReducer} from './Counter-reducer';
 import {loadState, saveState} from '../../utils/localstorage-utils';
 
+
+
+
 const rootReducer = combineReducers({
     counter: counterReducer
 })
@@ -16,3 +19,6 @@ store.subscribe(() => {
         counter: store.getState().counter
     })
 })
+
+// @ts-ignore
+window.store = store
